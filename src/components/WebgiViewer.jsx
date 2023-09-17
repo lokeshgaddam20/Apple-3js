@@ -10,25 +10,14 @@ import {
   ViewerApp,
   AssetManagerPlugin,
   GBufferPlugin,
-  timeout,
   ProgressivePlugin,
   TonemapPlugin,
   SSRPlugin,
   SSAOPlugin,
-  DiamondPlugin,
-  FrameFadePlugin,
-  GLTFAnimationPlugin,
-  GroundPlugin,
   BloomPlugin,
-  TemporalAAPlugin,
-  AnisotropyPlugin,
   GammaCorrectionPlugin,
   addBasePlugins,
-  ITexture,
-  TweakpaneUiPlugin,
-  AssetManagerBasicPopupPlugin,
   CanvasSnipperPlugin,
-  IViewerPlugin,
   mobileAndTabletCheck,
 } from "webgi";
 import gsap from "gsap";
@@ -71,8 +60,7 @@ function WebgiViewer() {
     // This must be called once after all plugins are added.
     viewer.renderer.refreshPipeline();
 
-    // Import and add a GLB file.
-    await viewer.load("scene-black.glb");
+    await viewer.addFromPath("scene-black.glb");
 
     // Load an environment map if not set in the glb file
     // await viewer.setEnvironmentMap((await manager.importer!.importSinglePath<ITexture>("./assets/environment.hdr"))!);
@@ -85,7 +73,7 @@ function WebgiViewer() {
 
   return (
     <div className="webgi-canvas-container">
-      <canvas id="webgi-canvas" ref={canvasReff} />
+      <canvas id="webgi-canvas" ref={canvasRef} />
     </div>
   );
 }
