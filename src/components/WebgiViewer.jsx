@@ -20,9 +20,20 @@ import {
 } from "webgi";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { scrollAnimation } from "../lib/scroll-animation";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function WebgiViewer() {
   const canvasRef = useRef(null);
+
+  const memorizedScrollAnimation = useCallback(
+    (position, target, onUpdate) => {
+        if(position && target){
+            scrollAnimation(position, target, onUpdate);
+        }
+    },[]
+  )
 
   const setupViewer = useCallback(async () => {
   
@@ -56,6 +67,10 @@ function WebgiViewer() {
     window.scrollTo(0, 0);
 
     let needsUpdate = true;
+    const onUpdate = () => {
+        needsUpdate = true;
+        viewer.setDirty();
+    }
 
     viewer.addEventListener('preFrame', () => {
         if (needsUpdate){
@@ -64,6 +79,7 @@ function WebgiViewer() {
         }
     });
 
+    memorizedScrollAnimation(position, target, onUpdate);
 }, []);
 
   useEffect(() => {
